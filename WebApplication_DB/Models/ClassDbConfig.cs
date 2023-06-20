@@ -135,7 +135,6 @@ namespace WebApplication_DB.Models
                     con.Dispose();
                 }
             }
-
             return (resOut, errOut);
         }
 
