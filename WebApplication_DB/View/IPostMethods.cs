@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApplication_DB.Models;
 
-namespace CustomerProject.View
+namespace WebApplication_DB.View
 {
     public interface IPostMethods
     {

@@ -1,4 +1,4 @@
-﻿using CustomerProject.View;
+﻿using WebApplication_DB.View;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
