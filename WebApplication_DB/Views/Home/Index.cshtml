@@ -42,12 +42,15 @@
         <th>
             @Html.DisplayNameFor(model => model.email)
         </th>
-        <th></th>
+        <th>Edit</th>
+        <th>Details</th>
+        <th>Delete</th>
+        <th>Delete JS</th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
+        <tr id="row_@item.custIdn">
             <td>
                 @Html.DisplayFor(modelItem => item.custIdn)
             </td>
@@ -79,11 +82,95 @@
                 @Html.DisplayFor(modelItem => item.email)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.custIdn }) |
-                @Html.ActionLink("Details", "Details", new { id = item.custIdn }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.custIdn })
+                @Html.ActionLink("Edit", "Edit", new { id = item.custIdn }, new { @class = "btn btn-success" })
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.custIdn }, new { @class = "btn btn-success" })
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new { id = item.custIdn }, new { @class = "btn btn-danger" })
+            </td>
+            <td>
+                <a href="#" class="btn btn-danger" onclick="ConfirmDelete(@item.custIdn)">Delete JS</a>
             </td>
         </tr>
     }
 
 </table>
+
+<input type="hidden" id="hiddenCustomerId" />
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header alert alert-success">
+                <h3 class="modal-title">Delete Customer</h3>
+            </div>
+            <div class="modal-body">
+                <h4 class="myMessage">Are you sure? You want to delete this.</h4>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-dark" data-dismiss="modal" onclick="ConfirmCancel()">Cancel</a>
+                <a href="#" class="btn btn-success" onclick="DeleteCustomer()">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myResult">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header alert alert-success">
+                <h3 class="modal-title">Result</h3>
+            </div>
+            <div class="modal-body">
+                <h4 class="myResultMessage">Are you sure? You want to delete this.</h4>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-dark" data-dismiss="modal" onclick="Ok()">OK</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    var ConfirmDelete = function (CustomerId) {
+        $("#hiddenCustomerId").val(CustomerId);
+        $("#myModal").modal("show");
+    }
+    var ConfirmCancel = function () {
+        $("#myModal").modal("hide");
+    }
+    var DeleteCustomer = function () {
+        var custId = $("#hiddenCustomerId").val();
+        $.ajax({
+            type: "POST",
+            url: "/Home/DeleteJS",
+            data: { id: custId },
+            success: function (result) {
+                if (result != "4") {
+                    if (!$(".modal-header").hasClass("alert-danger")) {
+                        $(".modal-header").removeClass("alert-success").addClass("alert-danger");
+                    }
+                    $(".modal-header").html("Error");
+                    $(".myMessage").html(result);
+                }
+                else {
+                    $("#myModal").modal("hide");                    
+                    $("#row_" + custId).remove();
+
+                    $("#myResult").modal("show");
+                    $(".myResultMessage").html("Əməliyyat yerinə yetirildi");
+                }
+            },
+            error: function () {
+                $("#myModal").modal("hide");
+            }
+        })
+    }
+    var Ok = function () {
+        $("#myResult").modal("hide");
+    }
+</script>

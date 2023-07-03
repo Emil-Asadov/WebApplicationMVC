@@ -12,8 +12,6 @@ namespace WebApplication_DB.View
     {
         (DataTable dt, string err) GetGender();
         (DataTable dt, string err) GetCustomer(int custID = 0);
-        (DataTable dt, string err) GetCustomer(ClassControls cls);
-        (string fullName, string err) GetCustomerFullNameById(int custId);
         (List<ClassControls> res, string err) GetCustomerLast();
         (ClassControls res, string err) GetCustomerById(int custId);
     }

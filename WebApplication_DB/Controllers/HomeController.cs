@@ -27,17 +27,18 @@ namespace WebApplication_DB.Controllers
                 {
                     return RedirectToAction("Error", "Home", new ErrorViewModel { ErrorId = 400, ErrorMessage = err });
                 }
-
-                return View(res);
             }
             catch (Exception ex)
             {
-                err = ex.Message;
+                if (!string.IsNullOrWhiteSpace(err))
+                {
+                    return RedirectToAction("Error", "Home", new ErrorViewModel { ErrorId = 400, ErrorMessage = ex.Message });
+                }
             }
-            ViewBag.Message = err;
-            return View();
+            //ViewBag.Message = err;
+            return View(res);
         }
-        
+
         [HttpGet]
         public ActionResult Create(string inpParam)
         {
@@ -46,6 +47,10 @@ namespace WebApplication_DB.Controllers
             {
                 cls.lstGender = new List<ClassGender>();
                 (var dt, var err) = clsGetMethods.GetGender();
+                if (!string.IsNullOrWhiteSpace(err))
+                {
+                    return RedirectToAction("Error", "Home", new ErrorViewModel { ErrorId = 400, ErrorMessage = err });
+                }
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     cls.lstGender.Add(
@@ -63,12 +68,12 @@ namespace WebApplication_DB.Controllers
                 //    name = "Please select one"
                 //});
                 #endregion
-                return View(cls);
             }
             catch (Exception ex)
             {
                 return RedirectToAction("Error", "Home", new ErrorViewModel { ErrorId = 400, ErrorMessage = ex.Message });
             }
+            return View(cls);
         }
         [HttpPost]
         [ActionName("Create")]
@@ -80,6 +85,10 @@ namespace WebApplication_DB.Controllers
                     return View(cls);
                 cls.lstGender = new List<ClassGender>();
                 (var dt, var err) = clsGetMethods.GetGender();
+                if (!string.IsNullOrWhiteSpace(err))
+                {
+                    return RedirectToAction("Error", "Home", new ErrorViewModel { ErrorId = 400, ErrorMessage = err });
+                }
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     cls.lstGender.Add(
@@ -97,6 +106,7 @@ namespace WebApplication_DB.Controllers
                 //    name = "Please select one"
                 //});
                 #endregion
+
                 #region ClassControls-da Required qoyulub
                 //if (cls.gender == 0)
                 //{
@@ -105,6 +115,7 @@ namespace WebApplication_DB.Controllers
                 //    return View(cls);
                 //}
                 #endregion
+
                 (var res, var custId, var errRes) = clsPostMethods.FileOper(cls);
                 if (!string.IsNullOrWhiteSpace(errRes))
                 {
@@ -147,6 +158,10 @@ namespace WebApplication_DB.Controllers
                 }
                 res.lstGender = new List<ClassGender>();
                 (var dtGender, var errGender) = clsGetMethods.GetGender();
+                if (!string.IsNullOrWhiteSpace(err))
+                {
+                    return RedirectToAction("Error", "Home", new ErrorViewModel { ErrorId = 400, ErrorMessage = err });
+                }
                 for (int i = 0; i < dtGender.Rows.Count; i++)
                 {
                     res.lstGender.Add(
@@ -188,6 +203,10 @@ namespace WebApplication_DB.Controllers
                     return View(cls);
                 cls.lstGender = new List<ClassGender>();
                 (var dt, var err) = clsGetMethods.GetGender();
+                if (!string.IsNullOrWhiteSpace(err))
+                {
+                    return RedirectToAction("Error", "Home", new ErrorViewModel { ErrorId = 400, ErrorMessage = err });
+                }
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     cls.lstGender.Add(
@@ -262,11 +281,10 @@ namespace WebApplication_DB.Controllers
             {
                 return RedirectToAction("Error", "Home", new ErrorViewModel { ErrorId = 400, ErrorMessage = ex.Message });
             }
-        }       
-        
+        }
 
         [HttpGet, ActionName("Delete")]
-        public ActionResult DeleteEmployeeGet(int id)
+        public ActionResult DeleteCustomerGet(int id)
         {
             var res = new ClassControls();
             var err = string.Empty;
@@ -293,20 +311,41 @@ namespace WebApplication_DB.Controllers
             }
         }
         [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteEmployee(int id)
+        public ActionResult DeleteCustomerPost(int id)
         {
             try
             {
                 (var res, var errRes) = clsPostMethods.FileDelete(id);
                 if (!string.IsNullOrWhiteSpace(errRes))
                 {
-                    return RedirectToAction("Error","Home", new ErrorViewModel { ErrorId = 400, ErrorMessage = errRes });
+                    return RedirectToAction("Error", "Home", new ErrorViewModel { ErrorId = 400, ErrorMessage = errRes });
                 }
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Error","Home", new ErrorViewModel { ErrorId = 400, ErrorMessage = ex.Message });
+                return RedirectToAction("Error", "Home", new ErrorViewModel { ErrorId = 400, ErrorMessage = ex.Message });
+            }
+        }
+        [HttpPost, ActionName("DeleteJS")]
+        public JsonResult DeleteCustomerJS(int id)
+        {
+            var result = string.Empty;
+            try
+            {
+                (var res, var errRes) = clsPostMethods.FileDelete(id);
+                if (!string.IsNullOrWhiteSpace(errRes))
+                {
+                    result = errRes;
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                result = res;
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
         public ActionResult About()
