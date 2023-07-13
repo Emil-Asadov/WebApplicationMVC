@@ -125,7 +125,6 @@ namespace WebApplication_DB.Controllers
                     TempData["!Res_4"] = res;
                     return View(cls);
                 }
-                ModelState.Clear();
                 TempData["Res_4"] = $"Əməliyyat yerinə yetirildi. {custId} qeydiyyatlı müştəri əlavə edildi";
 
                 return RedirectToAction("Create", "Home", new { inpParam = "Test" }); //Eger Get metodunun giris parametri varsa(string inpParam), parametr bu sekilde oturulur: new { inpParam = "Test" }. Giris parametrinin adini eynile burda yazmaq lazimdir. Eks halda null gedecey
