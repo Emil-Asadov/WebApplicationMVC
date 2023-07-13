@@ -56,7 +56,7 @@ namespace WebApplication_DB.Controllers
                     new ClassGender
                     {
                         idn = int.Parse(dt.Rows[i]["ID"].ToString()),
-                        name = dt.Rows[i]["Name"].ToString()
+                        name = dt.Rows[i]["NAME"].ToString()
                     }
                 );
                 }
@@ -94,7 +94,7 @@ namespace WebApplication_DB.Controllers
                     new ClassGender
                     {
                         idn = int.Parse(dt.Rows[i]["ID"].ToString()),
-                        name = dt.Rows[i]["Name"].ToString()
+                        name = dt.Rows[i]["NAME"].ToString()
                     }
                 );
                 }
@@ -212,7 +212,7 @@ namespace WebApplication_DB.Controllers
                     new ClassGender
                     {
                         idn = int.Parse(dt.Rows[i]["ID"].ToString()),
-                        name = dt.Rows[i]["Name"].ToString()
+                        name = dt.Rows[i]["NAME"].ToString()
                     }
                 );
                 }
