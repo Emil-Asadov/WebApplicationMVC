@@ -308,6 +308,7 @@ namespace WebApplication_DB.Controllers
                 return RedirectToAction("Error", "Home", new ErrorViewModel { ErrorId = 400, ErrorMessage = ex.Message });
             }
         }
+
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteCustomerPost(int id)
         {
@@ -359,6 +360,7 @@ namespace WebApplication_DB.Controllers
 
             return View();
         }
+
         [HttpGet]
         public ActionResult Error(ErrorViewModel model)
         {
