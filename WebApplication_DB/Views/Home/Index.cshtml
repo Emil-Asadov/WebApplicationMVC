@@ -110,29 +110,12 @@
                 <h4 class="myMessage">Are you sure? You want to delete this.</h4>
             </div>
             <div class="modal-footer">
-                <a href="#" class="btn btn-dark" data-dismiss="modal" onclick="ConfirmCancel()">Cancel</a>
-                <a href="#" class="btn btn-success" onclick="DeleteCustomer()">Confirm</a>
+                <a href="#" id="btnConfirm" class="btn btn-success" onclick="DeleteCustomer()">Confirm</a>
+                <a href="#" id="btnCancelConfirm" class="btn btn-dark" data-dismiss="modal" onclick="ConfirmCancel()">Cancel</a>
             </div>
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="myResult">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header alert alert-success">
-                <h3 class="modal-title">Result</h3>
-            </div>
-            <div class="modal-body">
-                <h4 class="myResultMessage">Are you sure? You want to delete this.</h4>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-dark" data-dismiss="modal" onclick="Ok()">OK</a>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 
 <script>
@@ -141,7 +124,7 @@
         $("#myModal").modal("show");
     }
     var ConfirmCancel = function () {
-        $("#myModal").modal("hide");
+        window.location.reload(); //Page reload
     }
     var DeleteCustomer = function () {
         var custId = $("#hiddenCustomerId").val();
@@ -154,23 +137,24 @@
                     if (!$(".modal-header").hasClass("alert-danger")) {
                         $(".modal-header").removeClass("alert-success").addClass("alert-danger");
                     }
-                    $(".modal-header").html("Error");
+                    $(".modal-header").html("<h3>Error</h3>");
                     $(".myMessage").html(result);
                 }
                 else {
-                    $("#myModal").modal("hide");                    
-                    $("#row_" + custId).remove();
-
-                    $("#myResult").modal("show");
-                    $(".myResultMessage").html("Əməliyyat yerinə yetirildi");
+                    //$("#row_" + custId).remove(); //Page reload olunduguna gore manual silmeni bagladim
+                    if (!$(".modal-header").hasClass("alert-success")) {
+                        $(".modal-header").removeClass("alert-danger").addClass("alert-success");
+                    }
+                    $(".modal-header").html("<h3>Result</h3>");
+                    $(".myMessage").html("Əməliyyat yerinə yetirildi");                    
                 }
+                var elem = document.getElementById("btnConfirm");
+                elem.parentNode.removeChild(elem);
+                $("#btnCancelConfirm").html("OK");
             },
             error: function () {
                 $("#myModal").modal("hide");
             }
         })
-    }
-    var Ok = function () {
-        $("#myResult").modal("hide");
     }
 </script>
